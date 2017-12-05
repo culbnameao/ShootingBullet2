@@ -7,8 +7,8 @@
 // TODO: 弾のスピードを速くし、弾が画面右端を通り越したら再度発射可能にする。(D)          HW16A076 小谷　将豊
 // TODO: スコアのサイズを大きくする。(E)                                           HW16A076 小谷　将豊
 // TODO: スコアを100点ずつ加算するようにし、5桁の表示に変える。(F)                     HW16A076 小谷　将豊
-// TODO: PlayBGM()関数を使って、BGMを再生する。(G)
-// TODO: PlaySE()関数を使って、弾の発射時とターゲットに当たった時にSEを再生する。(H)
+// TODO: PlayBGM()関数を使って、BGMを再生する。(G)                                 HW16A005 有村 泉弥
+// TODO: PlaySE()関数を使って、弾の発射時とターゲットに当たった時にSEを再生する。(H)      HW16A005 有村 泉弥
 
 
 Vector2 cloudPos;       //!< 雲の位置
@@ -28,6 +28,8 @@ void Start()
     targetRect = Rect(280, -140, 40, 40);
     bulletPos.x = -999;
     score = 0;
+    // BGMを再生
+    PlayBGM ("bgm_maoudamashii_8bit07.mp3");
 }
 
 // 1/60秒ごとに呼ばれる関数です。モデルの更新と画面の描画を行います。
@@ -36,6 +38,7 @@ void Update()
     // 弾の発射
     if (( bulletPos.x >320 || bulletPos.x <= -999)  && Input::GetKeyDown(KeyMask::Space)) {
         bulletPos = cannonPos + Vector2(50, 10);
+        PlaySound ("se_maoudamashii_system27.mp3");
     }
 
     // 弾の移動
@@ -47,6 +50,7 @@ void Update()
         if (targetRect.Overlaps(bulletRect)) {
             score += 100;         // スコアの加算
             bulletPos.x = -999; // 弾を発射可能な状態に戻す
+            PlaySound ("se_maoudamashii_explosion06.mp3");
         }
     }
 
@@ -89,5 +93,7 @@ void Update()
     SetFont("nicoca_v1.ttf", 100.0f);
     DrawText(FormatString("%05d", score), Vector2(-319, 149), Color::black);
     DrawText(FormatString("%05d", score), Vector2(-320, 150), Color::white);
+
+
 }
 
